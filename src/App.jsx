@@ -490,13 +490,11 @@ export default function MishraCollectionCenter() {
           </Reveal>
 
           <Reveal delay={80}>
-            <div className="mb-4 max-w-xl">
-              <img
-                src={logoImg}
-                alt="Mishra Collection Center - Accurate, Reliable, Care You Can Trust"
-                className="w-full h-auto max-w-lg object-contain drop-shadow-sm rounded-xl"
-              />
-            </div>
+            <h1 style={{ ...font.display, ...type.h1, color: c.navy }} className="max-w-3xl">
+              Accurate results.
+              <br />
+              Care you can trust.
+            </h1>
           </Reveal>
 
           <Reveal delay={160}>
