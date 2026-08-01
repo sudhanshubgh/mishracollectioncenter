@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import logoImg from "./logo.png";
 import {
   Droplet,
   Beaker,
@@ -64,7 +65,7 @@ const ADDRESS = "Sonari Gurudwara and Brindavan Garden, Sonari";
 const MAP_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`;
 
 // Where new booking requests get sent.
-const NOTIFY_EMAIL = "sudhanshubgh@gmail.com";
+const NOTIFY_EMAIL = "kumarisupi2303@gmail.com";
 // Paste a free Web3Forms access key here (https://web3forms.com) to make
 // bookings send silently in the background with no tap required. Leave
 // blank and it falls back to opening a pre-filled email as a one-tap send.
@@ -489,11 +490,13 @@ export default function MishraCollectionCenter() {
           </Reveal>
 
           <Reveal delay={80}>
-            <h1 style={{ ...font.display, ...type.h1, color: c.navy }} className="max-w-3xl">
-              Accurate results.
-              <br />
-              Care you can trust.
-            </h1>
+            <div className="mb-4 max-w-xl">
+              <img
+                src={logoImg}
+                alt="Mishra Collection Center - Accurate, Reliable, Care You Can Trust"
+                className="w-full h-auto max-w-lg object-contain drop-shadow-sm rounded-xl"
+              />
+            </div>
           </Reveal>
 
           <Reveal delay={160}>
@@ -957,9 +960,20 @@ export default function MishraCollectionCenter() {
 
         <div
           className="max-w-6xl mx-auto mt-14 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs"
-          style={{ borderTop: "1px solid rgba(240,238,231,0.15)", color: "#F0EEE7", opacity: 0.55 }}
+          style={{ borderTop: "1px solid rgba(240,238,231,0.15)", color: "#F0EEE7", opacity: 0.8 }}
         >
-          <span>© {new Date().getFullYear()} Mishra Collection Center. All rights reserved.</span>
+          <span>
+            Designed & Developed by{" "}
+            <a
+              href="https://sudhanshudigitalservice.netlify.app/"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium underline hover:text-white transition-colors"
+              style={{ color: c.gold }}
+            >
+              Sudhanshu Kumar Singh
+            </a>
+          </span>
           <span>Care you can trust.</span>
         </div>
       </footer>
