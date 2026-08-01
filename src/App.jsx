@@ -309,15 +309,11 @@ export default function MishraCollectionCenter() {
     const record = { ...form, ref };
     setBooking(record);
     setSending(true);
+
+    // Send silently via email API (Web3Forms)
     const ok = await sendBookingEmailSilently(record);
     setSending(false);
     setEmailSent(ok);
-    if (!ok) {
-      // No access key configured yet (or the send failed) — fall back
-      // to opening a pre-filled email so the request still reaches
-      // NOTIFY_EMAIL with one tap.
-      goTo(buildMailtoLink(record));
-    }
   }
   // sandboxed iframe, which blocks plain <a href="tel:..."> navigation.
   // Forcing it through the top-level browsing context is the standard
@@ -814,14 +810,24 @@ export default function MishraCollectionCenter() {
               </form>
             </Reveal>
           ) : (
-            <div className="p-7 sm:p-8 rounded-2xl border" style={{ borderColor: c.green, background: "rgba(31,107,71,0.05)" }}>
+            <div
+              className="p-7 sm:p-8 rounded-2xl border"
+              style={{
+                borderColor: emailSent ? c.green : c.red,
+                background: emailSent ? "rgba(31,107,71,0.05)" : "rgba(163,40,60,0.05)",
+              }}
+            >
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 color={c.green} size={26} className="flex-shrink-0" />
+                {emailSent ? (
+                  <CheckCircle2 color={c.green} size={26} className="flex-shrink-0" />
+                ) : (
+                  <X color={c.red} size={26} className="flex-shrink-0" />
+                )}
                 <div style={{ ...font.display, color: c.navy }} className="text-xl font-semibold">
-                  {emailSent ? "Request Emailed" : "Almost there"}
+                  {emailSent ? "Request Emailed" : "Booking Issue"}
                 </div>
               </div>
-              <p style={{ color: c.inkSoft }} className="text-sm mb-5">
+              <p style={{ color: emailSent ? c.inkSoft : c.red }} className="text-sm font-medium mb-5">
                 {emailSent ? (
                   <>
                     Your request — reference{" "}
@@ -830,10 +836,8 @@ export default function MishraCollectionCenter() {
                   </>
                 ) : (
                   <>
-                    We opened an email pre-filled with your request — reference{" "}
-                    <span style={{ ...font.mono, color: c.navy, fontWeight: 500 }}>{booking.ref}</span>.
-                    Just hit send there and we'll confirm your slot. Nothing is booked until we
-                    receive it.
+                    Please call and book there is some issue at our end… (Ref:{" "}
+                    <span style={{ ...font.mono, color: c.navy, fontWeight: 500 }}>{booking.ref}</span>)
                   </>
                 )}
               </p>
@@ -861,31 +865,24 @@ export default function MishraCollectionCenter() {
 
               <div className="flex flex-wrap gap-3">
                 <a
-                  href={buildMailtoLink(booking)}
-                  onClick={(e) => { e.preventDefault(); goTo(buildMailtoLink(booking)); }}
-                  className="px-6 py-3 rounded-full font-semibold text-sm inline-flex items-center justify-center gap-2"
-                  style={{ background: c.green, color: c.cream }}
-                >
-                  <Mail size={16} /> {emailSent ? "Open email again" : "Open email to send"}
-                </a>
-                <a
-                  href={buildSmsLink(booking)}
-                  onClick={(e) => { e.preventDefault(); goTo(buildSmsLink(booking)); }}
-                  className="px-6 py-3 rounded-full font-semibold text-sm inline-flex items-center justify-center gap-2 border"
-                  style={{ borderColor: c.navy, color: c.navy }}
-                >
-                  <MessageSquare size={16} /> Text instead
-                </a>
-                <a
                   href={`tel:+91${PHONE}`}
                   onClick={(e) => { e.preventDefault(); goTo(`tel:+91${PHONE}`); }}
-                  className="px-6 py-3 rounded-full font-semibold text-sm inline-flex items-center justify-center gap-2 border"
-                  style={{ borderColor: c.navy, color: c.navy }}
+                  className="px-6 py-3 rounded-full font-semibold text-sm inline-flex items-center justify-center gap-2"
+                  style={{ background: c.navy, color: c.cream }}
                 >
-                  <Phone size={16} /> Call instead
+                  <Phone size={16} /> Tap to Call · {PHONE}
+                </a>
+                <a
+                  href={`https://wa.me/91${WHATSAPP}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-6 py-3 rounded-full font-semibold text-sm inline-flex items-center justify-center gap-2 border"
+                  style={{ borderColor: c.green, color: c.green }}
+                >
+                  <MessageCircle size={16} /> WhatsApp instead
                 </a>
                 <button onClick={resetBooking} className="px-6 py-3 rounded-full font-semibold text-sm" style={{ color: c.inkSoft }}>
-                  New request
+                  Try again
                 </button>
               </div>
             </div>
